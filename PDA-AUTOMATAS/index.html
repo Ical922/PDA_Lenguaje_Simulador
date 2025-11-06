@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>PDA — Lenguaje L (Visual)</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="titles">
+      <div class="univ">UNIVERSIDAD MARIANO GALVEZ</div>
+      <div class="course">AUTOMATAS Y LENGUAJES FORMALES - SEXTO SEMESTRE - INGENIERÍA EN SISTEMAS</div>
+      <div class="lang">PDA — Lenguaje L = { x* y^{2n} z^{m} z^{m+2} y^{3n} | n ≥ 1, m ≥ 2 }</div>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="left-panel">
+      <div class="controls card">
+        <label for="inputString">Ingrese cadena (x,y,z)</label>
+        <input id="inputString" placeholder="ej: yyzzzzzzyyy" />
+        <div class="buttons">
+          <button id="checkBtn">Comprobar</button>
+          <button id="sampleBtn">Cargar ejemplo</button>
+          <label class="speed">Velocidad:
+            <select id="speedSelect">
+              <option value="400">Lenta</option>
+              <option value="250" selected>Normal</option>
+              <option value="80">Rápida</option>
+            </select>
+          </label>
+        </div>
+        <div id="result" class="result"></div>
+      </div>
+
+      <div class="automaton card">
+        <h3>Diagrama del PDA</h3>
+        <div class="svg-wrap">
+          <svg id="svgAuto" viewBox="0 0 900 160" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <marker id="arrow" markerWidth="10" markerHeight="8" refX="8" refY="4" orient="auto">
+                <path d="M0,0 L10,4 L0,8 z" fill="#222"></path>
+              </marker>
+              <filter id="glow">
+                <feGaussianBlur stdDeviation="3.5" result="coloredBlur"/>
+                <feMerge>
+                  <feMergeNode in="coloredBlur"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+            </defs>
+
+            <g class="state-group" id="g_q0" transform="translate(70,80)">
+              <circle class="state-circle" r="28"></circle>
+              <text class="state-label" x="0" y="6">q0</text>
+            </g>
+
+            <g class="state-group" id="g_q1" transform="translate(250,80)">
+              <circle class="state-circle" r="28"></circle>
+              <text class="state-label" x="0" y="6">q1</text>
+            </g>
+
+            <g class="state-group" id="g_q2" transform="translate(450,80)">
+              <circle class="state-circle" r="28"></circle>
+              <text class="state-label" x="0" y="6">q2</text>
+            </g>
+
+            <g class="state-group" id="g_q3" transform="translate(650,80)">
+              <circle class="state-circle" r="28"></circle>
+              <text class="state-label" x="0" y="6">q3</text>
+            </g>
+
+            <g class="state-group" id="g_q4" transform="translate(820,80)">
+              <circle class="state-circle accept" r="28"></circle>
+              <text class="state-label" x="0" y="6">q4</text>
+            </g>
+
+            <path id="t_q0_q1" class="trans" d="M98,80 L222,80" marker-end="url(#arrow)"></path>
+            <text class="tlabel" x="160" y="65">yy, λ ; A</text>
+
+            <path id="t_q1_q1" class="trans loop" d="M250,52 C250,32 290,32 290,52" marker-end="url(#arrow)"></path>
+            <text class="tlabel" x="300" y="40">yy, λ ; A</text>
+
+            <path id="t_q1_q2" class="trans" d="M278,80 L422,80" marker-end="url(#arrow)"></path>
+            <text class="tlabel" x="350" y="65">z, λ ; λ</text>
+
+            <path id="t_q2_q3" class="trans" d="M478,80 L622,80" marker-end="url(#arrow)"></path>
+            <text class="tlabel" x="550" y="65">yyy, A ; λ</text>
+
+            <path id="t_q3_q4" class="trans" d="M678,80 L792,80" marker-end="url(#arrow)"></path>
+            <text class="tlabel" x="735" y="65">λ, Z ; Z</text>
+
+            <path id="t_q0_q0" class="trans loop2" d="M70,52 C70,20 110,20 110,52" marker-end="url(#arrow)"></path>
+            <text class="tlabel" x="110" y="20">x, λ ; λ</text>
+
+            <path id="t_q2_q2" class="trans loop" d="M450,52 C450,32 490,32 490,52" marker-end="url(#arrow)"></path>
+            <text class="tlabel" x="510" y="40">z, λ ; λ</text>
+
+            <path id="t_q3_q3" class="trans loop" d="M650,52 C650,32 690,32 690,52" marker-end="url(#arrow)"></path>
+            <text class="tlabel" x="700" y="40">yyy, A ; λ</text>
+          </svg>
+        </div>
+      </div>
+
+      <div class="notes card">
+        <h4>Descripción formal (resumen)</h4>
+        <pre>M = (Q, Σ, Γ, δ, q0, Z0, F)
+Q = {q0,q1,q2,q3,q4}  Σ={x,y,z}  Γ={Z0,A}  q0 inicial  F={q4}</pre>
+      </div>
+    </section>
+
+    <section class="right-panel">
+      <div class="card table-card">
+        <h4>Tabla de pasos</h4>
+        <table id="stepsTable">
+          <thead>
+            <tr><th>Paso</th><th>Símbolo</th><th>Estado</th><th>Tope pila</th><th>Acción</th><th>Nuevo estado</th><th>Pila</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div class="card inst-card">
+        <h4>Descripción instantánea (lista)</h4>
+        <pre id="instList" class="inst-list"></pre>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <small>Simulador PDA — Universidad Mariano Galvez</small>
+    <h3>NOMBRE: MARCO FRANCISCO ANTONIO ICAL CHUN </h3>
+        <h3>CARNET: 0902-23-25110</h3>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
+<!-- Bloque de Archivos del Proyecto -->
+<div class="project-files-card">
+  <h3>ARCHIVOS DEL PROYECTO</h3>
+  <a href="https://drive.google.com/drive/folders/1z-i51XPdn_zwM34qV8e7pB2SMrmg33nI?usp=drive_link" class="btn-drive" target="_blank">INGRESAR</a>
+</div>
